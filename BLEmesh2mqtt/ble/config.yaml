@@ -1,0 +1,23 @@
+# https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
+name: BLEmesh2mqtt dev add-on
+version: dev
+slug: blemesh2mqtt
+description: Example blemesh2mqtt add-on
+url: "https://github.com/nitrokart/BLEmesh2mqtt"
+arch:
+  - armhf
+  - armv7
+  - aarch64
+  - amd64
+  - i386
+init: false
+host_dbus: true
+privileged:
+  - NET_ADMIN
+map:
+  - share:rw
+options:
+  message: "Hello world..."
+schema:
+  message: "str?"
+  log_level: list(trace|debug|info|notice|warning|error|fatal)?
