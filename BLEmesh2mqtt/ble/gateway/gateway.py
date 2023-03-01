@@ -69,7 +69,7 @@ class MqttGateway(Application):
         super().__init__(loop)
 
         self._store = Store(location=os.path.join(basedir, "store.yaml"))
-        self._config = Config(os.path.join(basedir, "config.yaml"))
+        self._config = Config(os.path.join(basedir, "configuration.yaml"))
         self._nodes = {}
 
         self._messenger = None

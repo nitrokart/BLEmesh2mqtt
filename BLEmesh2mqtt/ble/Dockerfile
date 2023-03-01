@@ -29,13 +29,16 @@ RUN sh ./install-bluez.sh
 
 # install bridge
 WORKDIR /opt/hass-ble-mesh
-RUN git clone https://github.com/dominikberse/homeassistant-bluetooth-mesh.git .
-RUN git checkout master
+COPY ./gateway/ .
+#RUN git clone https://github.com/dominikberse/homeassistant-bluetooth-mesh.git .
+#RUN git checkout master
+COPY ./requirements.txt .
 RUN pip3 install -r requirements.txt
 
 # mount config
 WORKDIR /config
-VOLUME /config
+#VOLUME /config
+VOLUME ./config
 
 # run bluetooth service and bridge
 WORKDIR /opt/hass-ble-mesh/gateway

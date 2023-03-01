@@ -2,10 +2,19 @@
 
 #Starting BLEmesh2mqtt
 
-who
+pwd
+cd /
+ls
+
+cd /config
+pwd
+ls -la
+
+cd /opt/hass-ble-mesh/
+ls -la
+
 
 service dbus start
-
 /usr/libexec/bluetooth/bluetooth-meshd
 
 python3 gateway.py --basedir /config --reload
