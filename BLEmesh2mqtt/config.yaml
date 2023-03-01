@@ -3,7 +3,7 @@ name: BLEmesh2mqtt dev add-on
 version: dev
 slug: blemesh2mqtt
 description: BLEmesh2mqtt add-on
-url: "https://github.com/nitrokart/blemesh2mqtt"
+url: "https://github.com/nitrokart/BLEmesh2mqtt"
 arch:
   - armhf
   - armv7
@@ -22,4 +22,4 @@ schema:
   message: "str?"
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
   
-image: "nitrokart/BLEmesh2mqtt"
+image: "nitrokart/blemesh2mqtt"
