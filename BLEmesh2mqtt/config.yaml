@@ -22,4 +22,4 @@ schema:
   message: "str?"
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
   
-image: "nitrokart/blemesh2mqtt"
+#image: "nitrokart/blemesh2mqtt"
