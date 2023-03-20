@@ -1,25 +1,10 @@
 #!/bin/bash
 
-#Starting BLEmesh2mqtt
-
-pwd
-cd /
-ls
-
+# Starting BLEmesh2mqtt
 cd /config
-pwd
-ls -la
-
-cd /opt/hass-ble-mesh/
-ls -la
-
-
 service dbus start
-/usr/libexec/bluetooth/bluetooth-meshd
-
-python3 gateway.py --basedir /config --reload
-
 /usr/libexec/bluetooth/bluetooth-meshd &
 
-python3 gateway.py --basedir /config --reload &
-/bin/bash
+cd /opt/hass-ble-mesh/
+python3 gateway.py --basedir /config --reload
+#/bin/bash
