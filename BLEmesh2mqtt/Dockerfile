@@ -38,7 +38,7 @@ RUN pip3 install -r requirements.txt
 # mount config
 WORKDIR /config
 #VOLUME /config
-VOLUME ./config
+COPY ./config
 
 # run bluetooth service and bridge
 WORKDIR /opt/hass-ble-mesh/gateway
