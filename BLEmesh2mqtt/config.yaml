@@ -3,7 +3,7 @@ version: dev
 slug: blemesh2mqtt
 description: Example BLEmesh2mqtt add-on with full access (v1)
 url: https://github.com/nitrokart/BLEmesh2mqtt
-image: "ghcr.io/home-assistant/{arch}-blemesh2mqtt"
+image: "ghcr.io/nitrokart/{arch}-blemesh2mqtt"
 arch:
   - armhf
   - armv7
