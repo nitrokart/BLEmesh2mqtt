@@ -76,21 +76,32 @@ class HassMqttMessenger:
         async with AsyncExitStack() as stack:
             tasks = await stack.enter_async_context(Tasks())
 
-            # connect to MQTT broker
-            await stack.enter_async_context(self._client)
+            while True:
+                try:
+                    # connect to MQTT broker
+                    await stack.enter_async_context(self._client.connect())
 
-            # spawn tasks for every node
-            for node in self._nodes.all():
-                bridge = self._bridges.get(node.type)
+                    # spawn tasks for every node
+                    for node in self._nodes.all():
+                        bridge = self._bridges.get(node.type)
 
-                if bridge is None:
-                    logging.warning(f"No MQTT bridge for node {node} ({node.type})")
+                        if bridge is None:
+                            logging.warning(f"No MQTT bridge for node {node} ({node.type})")
+                            return
+
+                        tasks.spawn(bridge.listen(node), f"bridge {node}")
+
+                    # global subscription to messages
+                    await self._client.subscribe("homeassistant/#")
+
+                    # wait for all tasks
+                    await tasks.gather()
+
+                except MqttError:
+                    logging.warning("Lost connection to MQTT broker")
+                    await asyncio.sleep(10)
+                    continue
+
+                except asyncio.CancelledError:
+                    logging.debug("Run task cancelled")
                     return
-
-                tasks.spawn(bridge.listen(node), f"bridge {node}")
-
-            # global subscription to messages
-            await self._client.subscribe("homeassistant/#")
-
-            # wait for all tasks
-            await tasks.gather()

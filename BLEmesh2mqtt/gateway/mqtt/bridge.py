@@ -1,6 +1,7 @@
 import json
 import logging
 import asyncio
+import asyncio_mqtt
 
 
 class HassMqttBridge:
@@ -37,30 +38,46 @@ class HassMqttBridge:
         Listen for incoming messages and node changes
         """
 
-        # send node configuration for MQTT discovery
-        await node.ready.wait()
-        await self.config(node)
+        while True:
+            try:
+                # send node configuration for MQTT discovery
+                await node.ready.wait()
+                await self.config(node)
 
-        # listen for node changes (this will also push the initial state)
-        node.subscribe(self._property_change, resend=True)
+                # listen for node changes (this will also push the initial state)
+                node.subscribe(self._property_change, resend=True)
 
-        # listen for incoming MQTT messages
-        async with self._messenger.filtered_messages(self.component, node) as messages:
-            async for message in messages:
-                logging.info(f"Received message on {message.topic}:\n{message.payload}")
+                # listen for incoming MQTT messages
+                async with self._messenger.filtered_messages(self.component, node) as messages:
+                    async for message in messages:
+                        logging.info(f"Received message on {message.topic}:\n{message.payload}")
 
-                # get command from topic and load message
-                command = message.topic.split("/")[-1]
-                payload = json.loads(message.payload.decode())
+                        # get command from topic and load message
+                        command = message.topic.split("/")[-1]
+                        payload = json.loads(message.payload.decode())
 
-                try:
-                    # get handler from command name
-                    handler = getattr(self, f"_mqtt_{command}")
-                except:
-                    logging.warning(f"Missing handler for command {command}")
-                    continue
+                        try:
+                            # get handler from command name
+                            handler = getattr(self, f"_mqtt_{command}")
+                        except:
+                            logging.warning(f"Missing handler for command {command}")
+                            continue
 
-                await handler(node, payload)
+                        await handler(node, payload)
+
+            except asyncio.CancelledError:
+                logging.debug("Listen task cancelled")
+                return
+
+            except asyncio.TimeoutError:
+                logging.warning("Timeout connecting to MQTT broker")
+                asyncio.sleep(10)
+                continue
+
+            except asyncio_mqtt.error.MqttError:
+                logging.warning("Lost connection to MQTT broker")
+                asyncio.sleep(10)
+                continue
 
     async def config(self, node):
         """
