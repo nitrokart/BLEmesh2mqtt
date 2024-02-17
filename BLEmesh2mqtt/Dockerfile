@@ -1,6 +1,5 @@
 FROM python:3.10-bullseye
 
-
 RUN apt-get -y update && apt-get -y upgrade && apt-get -y install \
     build-essential \
     python3-docutils \
@@ -39,6 +38,10 @@ RUN pip3 install -r requirements.txt
 WORKDIR /config
 #VOLUME /config
 COPY ./config .
+
+# set up dbus directory and permissions
+RUN mkdir -p /var/run/dbus && \
+    chmod 777 /var/run/dbus
 
 # run bluetooth service and bridge
 WORKDIR /opt/hass-ble-mesh/gateway

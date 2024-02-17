@@ -1,9 +1,9 @@
-name: BLEmesh2mqtt dev add-on
+name: BLEmesh2mqtt
 version: dev
 slug: blemesh2mqtt
-description: Example BLEmesh2mqtt add-on with full access (v1)
-url: https://github.com/nitrokart/BLEmesh2mqtt
-image: "ghcr.io/nitrokart/{arch}-blemesh2mqtt"
+description: BLEmesh2mqtt add-on with full access (v1)
+url: https://github.com/mtippt/BLEmesh2mqtt
+image: "ghcr.io/mtippt/{arch}-blemesh2mqtt"
 arch:
   - armhf
   - armv7

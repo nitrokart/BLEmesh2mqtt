@@ -34,14 +34,14 @@ class Light(Generic):
         return property in self._features
 
     async def turn_on(self):
-        await self.set_onoff_unack(True, transition_time=0.5)
+        await self.set_onoff_unack(True, transition_time=0.0)
 
     async def turn_off(self):
-        await self.set_onoff_unack(False, transition_time=0.5)
+        await self.set_onoff_unack(False, transition_time=0.0)
 
     async def set_brightness(self, brightness):
         if self._is_model_bound(models.LightLightnessServer):
-            await self.set_lightness_unack(brightness, transition_time=0.5)
+            await self.set_lightness_unack(brightness, transition_time=0.0)
         elif self._is_model_bound(models.LightCTLServer):
             await self.set_ctl_unack(brightness=brightness)
 
